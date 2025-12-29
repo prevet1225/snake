@@ -570,11 +570,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <script>
-        // Инициализация Supabase клиента с предоставленными данными
-        const supabaseUrl = 'https://lzxssxdhcruwtswwezrj.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx6eHNzeGRoY3J1d3Rzd3dlenJqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI2NjkwNDcsImV4cCI6MjA1ODI0NTA0N30.WJp_iHwkNdFFfmtx-12vpg_y-6w8s-R';
-        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-        
         // Элементы игры
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
@@ -900,12 +895,17 @@
         
         // ==================== SUPABASE ФУНКЦИИ ====================
         
+        // Инициализация Supabase клиента
+        const supabaseUrl = 'https://lzxssxdhcruwtswwezrj.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx6eHNzeGRoY3J1d3Rzd3dlenJqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI2NjkwNDcsImV4cCI6MjA1ODI0NTA0N30.WJp_iHwkNdFFfmtx-12vpg_y-6w8s-R';
+        const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+        
         // Загрузка таблицы лидеров
         async function loadLeaderboard() {
             leaderboardContent.innerHTML = '<div class="loading">Загрузка таблицы лидеров...</div>';
             
             try {
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('snake_scores')
                     .select('*')
                     .order('score', { ascending: false })
@@ -977,7 +977,7 @@
             saveScoreBtn.disabled = true;
             
             try {
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('snake_scores')
                     .insert([{
                         player_name: playerName.substring(0, 20),
